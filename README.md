@@ -69,6 +69,8 @@ Blank lines at the start and end of each frame are removed. To keep vertical pad
 | --- | --- | --- |
 | `fps` | `4` | Frames per second. Clamped between `fpsMin` and `fpsMax`. |
 | `bare` | off | `bare: yes` (or `true`) shows only the drawing: no title, no "Link to original", no frame around it. |
+| `size` | `100` | Scale of the drawing as a percentage of normal size (10–300). |
+| `fit` | off | `fit: yes` shrinks the drawing, if needed, so its widest line fits the width of the page column. Combines with `size`: `size` is the starting size and `fit` only shrinks further. |
 
 ## Plugin options
 
