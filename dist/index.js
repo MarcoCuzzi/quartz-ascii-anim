@@ -73,6 +73,16 @@ var AsciiAnim = (userOptions) => {
   const options = { ...defaultOptions, ...userOptions };
   return {
     name: "AsciiAnim",
+    // Metodi vuoti: Quartz richiede almeno uno di questi per accettare il transformer
+    textTransform(_ctx, src) {
+      return src;
+    },
+    markdownPlugins() {
+      return [];
+    },
+    htmlPlugins() {
+      return [];
+    },
     externalResources() {
       return {
         js: [
