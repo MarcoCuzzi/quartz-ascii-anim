@@ -7,6 +7,7 @@ function buildScript(options) {
   window.__asciiAnimLoaded = true;
 
   const CFG = ${config};
+  const isHeading = (el) => /^H[1-6]$/.test(el.tagName);
 
   function run() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -40,9 +41,38 @@ function buildScript(options) {
       out.className = bare ? "ascii-anim bare" : "ascii-anim";
       out.textContent = frames[0];
 
-      const target = bare
-        ? (code.closest(".transclude") || code.closest("pre"))
-        : code.closest("pre");
+      const pre = code.closest("pre");
+      let target = pre;
+
+      if (bare) {
+        // Nessun riquadro, bordo o sfondo attorno al disegno
+        out.style.border = "none";
+        out.style.background = "none";
+        out.style.padding = "0";
+        out.style.margin = "0";
+
+        const fig = pre.closest("figure") || pre;
+        const parent = fig.parentElement;
+        const onlyTransclusion =
+          parent &&
+          parent.querySelector("a.transclude-src") &&
+          Array.from(parent.children).every(
+            (c) => c === fig || isHeading(c) || c.matches("a.transclude-src")
+          );
+
+        if (onlyTransclusion) {
+          // Il contenitore ha solo titolo, disegno e link: lo sostituisco tutto
+          target = parent;
+        } else {
+          // Nessun contenitore dedicato: tolgo solo titolo e link adiacenti
+          const prev = fig.previousElementSibling;
+          if (prev && isHeading(prev)) prev.remove();
+          const next = fig.nextElementSibling;
+          if (next && next.matches("a.transclude-src")) next.remove();
+          target = fig;
+        }
+      }
+
       target.replaceWith(out);
 
       if (reduceMotion || frames.length < 2) return;
