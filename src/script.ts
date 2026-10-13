@@ -46,11 +46,6 @@ export function buildScript(options: AsciiAnimOptions): string {
       let target = pre;
 
       if (bare) {
-        // Nessun riquadro, bordo o sfondo attorno al disegno
-        out.style.border = "none";
-        out.style.background = "none";
-        out.style.padding = "0";
-        out.style.margin = "0";
 
         const fig = pre.closest("figure") || pre;
         const parent = fig.parentElement;

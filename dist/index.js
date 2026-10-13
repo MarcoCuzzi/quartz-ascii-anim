@@ -45,11 +45,6 @@ function buildScript(options) {
       let target = pre;
 
       if (bare) {
-        // Nessun riquadro, bordo o sfondo attorno al disegno
-        out.style.border = "none";
-        out.style.background = "none";
-        out.style.padding = "0";
-        out.style.margin = "0";
 
         const fig = pre.closest("figure") || pre;
         const parent = fig.parentElement;
@@ -99,6 +94,23 @@ var defaultOptions = {
   fpsDefault: 4,
   maxFrames: 100
 };
+var style = `
+.ascii-anim {
+  font-family: var(--codeFont, monospace);
+  font-variant-ligatures: none;
+  line-height: 1.2;
+  white-space: pre;
+  overflow-x: auto;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+}
+.ascii-anim.bare {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+`;
 var AsciiAnim = (userOptions) => {
   const options = { ...defaultOptions, ...userOptions };
   return {
@@ -115,6 +127,7 @@ var AsciiAnim = (userOptions) => {
     },
     externalResources() {
       return {
+        css: [{ content: style, inline: true }],
         js: [
           {
             contentType: "inline",
